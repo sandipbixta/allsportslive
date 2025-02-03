@@ -1,73 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Sports Live</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #2c3e50; }
-        p { color: #34495e; }
-    </style>
-</head>
-<body>
-    <h1>Welcome to All Sports Live</h1>
-    <p>Live sports streaming coming soon!</p>
-</body>
-</html>
-<video id="liveStream" class="video-js vjs-default-skin" controls autoplay width="640" height="360">
-    <source src="https://bit.ly/ddy-m3u1all" type="application/x-mpegURL">
-</video>
+import React from 'react';
+import ReactPlayer from 'react-player';
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
-<script>
-    var player = videojs('liveStream');
-    player.play();
-</script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Sports Live Streaming</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video-js.min.css" rel="stylesheet">
-    <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        .menu { margin-bottom: 20px; }
-        .menu button { padding: 10px; margin: 5px; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <h1>All Sports Live Streaming</h1>
-    
-    <!-- Sports Category Buttons -->
-    <div class="menu">
-        <button onclick="changeStream('https://bit.ly/ddy-m3u1all')">Football</button>
-        <button onclick="changeStream('https://example.com/basketball.m3u8')">Basketball</button>
-        <button onclick="changeStream('https://example.com/cricket.m3u8')">Cricket</button>
-        <button onclick="changeStream('https://example.com/tennis.m3u8')">Tennis</button>
-    </div>
-
-    <!-- Video Player -->
-    <video id="liveStream" class="video-js vjs-default-skin" controls autoplay width="640" height="360">
-        <source id="streamSource" src="https://bit.ly/ddy-m3u1all" type="application/x-mpegURL">
-    </video>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
-    <script>
-        var player = videojs('liveStream');
+const Home = () => {
+  return (
+    <div style={{ backgroundColor: '#f2f2f2', color: '#333', fontFamily: 'Arial, sans-serif' }}>
+      <header style={{ backgroundColor: '#007bff', padding: '20px', color: '#fff' }}>
+        <h1 style={{ textAlign: 'center' }}>FreeSports Live</h1>
+      </header>
+      
+      <nav style={{ backgroundColor: '#fff', padding: '10px', display: 'flex', justifyContent: 'center' }}>
+        <a href="#football" style={{ margin: '0 15px' }}>Football</a>
+        <a href="#basketball" style={{ margin: '0 15px' }}>Basketball</a>
+        <a href="#cricket" style={{ margin: '0 15px' }}>Cricket</a>
+        <a href="#tennis" style={{ margin: '0 15px' }}>Tennis</a>
+      </nav>
+      
+      <main style={{ padding: '20px' }}>
+        <section id="football">
+          <h2>Football</h2>
+          <ReactPlayer
+            url="https://bit.ly/ddy-m3u1all"
+            playing
+            controls
+            width="100%"
+            height="auto"
+            style={{ maxHeight: '500px', margin: '0 auto', display: 'block' }}
+          />
+        </section>
         
-        function changeStream(newStream) {
-            var streamSource = document.getElementById('streamSource');
-            streamSource.src = newStream;
-            player.src({ src: newStream, type: 'application/x-mpegURL' });
-            player.play();
-        }
-    </script>
+        <section id="basketball">
+          <h2>Basketball</h2>
+          {/* Add video player for basketball here */}
+        </section>
+        
+        <section id="cricket">
+          <h2>Cricket</h2>
+          {/* Add video player for cricket here */}
+        </section>
+        
+        <section id="tennis">
+          <h2>Tennis</h2>
+          {/* Add video player for tennis here */}
+        </section>
+      </main>
+      
+      <footer style={{ backgroundColor: '#007bff', padding: '10px', color: '#fff', textAlign: 'center' }}>
+        <p>FreeSports Live - All rights reserved</p>
+      </footer>
+    </div>
+  );
+};
 
-</body>
-</html>
-https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+export default Home;
+const express = require('express');
+const app = express();
+const port = 3001;
 
+app.use(express.json());
 
+let sports = {
+  football: 'https://bit.ly/ddy-m3u1all',
+  basketball: '',
+  cricket: '',
+  tennis: ''
+};
+
+// Endpoint to get streams for sports
+app.get('/api/streams', (req, res) => {
+  res.json(sports);
+});
+
+// Endpoint to add or update streams (you can use this to dynamically add streams)
+app.post('/api/streams', (req, res) => {
+  const { sport, url } = req.body;
+  if (sports[sport]) {
+    sports[sport] = url;
+    res.json({ message: `${sport} stream updated.` });
+  } else {
+    res.status(400).json({ error: 'Sport not found.' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Backend server running on http://localhost:${port}`);
+});
