@@ -1,0 +1,32 @@
+const express = require('express');
+const app = express();
+const port = 3001;
+
+app.use(express.json());
+
+let sports = {
+  football: 'https://bit.ly/ddy-m3u1all',
+  basketball: '',
+  cricket: '',
+  tennis: ''
+};
+
+// Endpoint to get streams for sports
+app.get('/api/streams', (req, res) => {
+  res.json(sports);
+});
+
+// Endpoint to add or update streams (you can use this to dynamically add streams)
+app.post('/api/streams', (req, res) => {
+  const { sport, url } = req.body;
+  if (sports[sport]) {
+    sports[sport] = url;
+    res.json({ message: `${sport} stream updated.` });
+  } else {
+    res.status(400).json({ error: 'Sport not found.' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Backend server running on http://localhost:${port}`);
+});
