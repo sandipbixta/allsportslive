@@ -15,3 +15,12 @@
     <p>Live sports streaming coming soon!</p>
 </body>
 </html>
+<video id="liveStream" class="video-js vjs-default-skin" controls autoplay width="640" height="360">
+    <source src="https://bit.ly/ddy-m3u1all" type="application/x-mpegURL">
+</video>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
+<script>
+    var player = videojs('liveStream');
+    player.play();
+</script>
